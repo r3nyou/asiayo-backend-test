@@ -2,6 +2,7 @@
 
 namespace App\Currency;
 
+use App\Exceptions\CurrencyException;
 use Exception;
 
 class Currency
@@ -41,20 +42,20 @@ class Currency
     {
         $validCurrency = array_keys($this->forexRate);
         if (!in_array($this->from ?? '', $validCurrency)) {
-            throw new Exception('from is invalid currency');
+            throw new CurrencyException('from is invalid currency');
         }
         if (!in_array($this->to ?? '', $validCurrency)) {
-            throw new Exception('to is invalid currency');
+            throw new CurrencyException('to is invalid currency');
         }
 
         if (!($this->amount || $this->amount == 0)) {
-            throw new Exception('amount is not specified');
+            throw new CurrencyException('amount is not specified');
         }
         if (floatval($this->amount) < 0) {
-            throw new Exception('amount must be greater than or equal to 0');
+            throw new CurrencyException('amount must be greater than or equal to 0');
         }
         if (!preg_match('/^[0]*[1-9]*[.]?[0-9]*$/', $this->amount)) {
-            throw new Exception('amount is not well-formed');
+            throw new CurrencyException('amount is not well-formed');
         }
     }
 

@@ -49,8 +49,6 @@ class CurrencyTest extends TestCase
 
     public function test_can_convert_from_float()
     {
-        $this->markTestIncomplete();
-
         $result = $this->currency
             ->amount('0.1')
             ->from('USD')

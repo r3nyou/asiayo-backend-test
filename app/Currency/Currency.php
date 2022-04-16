@@ -17,12 +17,18 @@ class Currency
         $this->forexRate = $forexRate;
     }
 
+    /**
+     * amount 為小數點後 2 位
+     * forex rate 為小數點後 5 位
+     * 計算取到小數點後 7 位
+     * @return string
+     */
     public function get(): string
     {
         return $this->bcround(bcmul(
             $this->amount,
             $this->forexRate[$this->from][$this->to],
-            2
+            7
         ));
     }
 

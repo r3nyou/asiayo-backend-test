@@ -47,7 +47,7 @@ class Currency
             throw new Exception('to is invalid currency');
         }
 
-        if (!$this->amount) {
+        if (!($this->amount || $this->amount == 0)) {
             throw new Exception('amount is not specified');
         }
         if (floatval($this->amount) < 0) {

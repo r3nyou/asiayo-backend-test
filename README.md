@@ -1,64 +1,55 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# 範例啟動
+```shell
+sh up.sh build --no-cache
+sh up.sh up -d
+sh up.sh composer install
+```
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# 測試方式
+執行 unit test、feature test
+```shell
+sh up.sh test
+```
 
-## About Laravel
+測試案例在 `tests/Unit`、`test/Feature`，測試案例包含
+1. 指定匯率資料
+2. 輸入整數可轉換
+3. 輸入浮點數可轉換
+4. 輸入浮點數小數點超過 2 位可轉換
+5. 輸入金額會四捨五入到小數點後 2 位
+6. 輸入金額為 0 轉換金額為 0
+7. 輸入負數不可轉換
+8. 輸入格式錯誤
+9. 輸入不支援的幣別
+10. 未設定轉換前、後幣別
+11. 轉換後格式
+12. API 請求正常
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+轉換前後範例
+```
+# forex rate: 1 USD to JPT 111.801
+USD         JPY
+0           0.00
+0.004       0.00
+0.005       1.12
+0.01        1.12
+0.1         11.18
+1           111.80
+1.00        111.80
+10000       1,118,010.00
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+API curl
+```shell
+curl --location --request GET 'http://localhost/api/currency-converter?amount=123.45&from=USD&to=JPY' \
+--header 'Accept: application/json'
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# 說明
+匯率轉換的類別在 `app/Crrency`
 
-## Learning Laravel
+為了避免傳遞的參數過多，並提供更易讀的程式碼，實作了 Fluent Interface
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+輸入的金額小數點後 2 位、匯率小數點後 5 位，需要較高精度的計算，因此 Currency 類別使用 [BCMath](https://www.php.net/manual/en/book.bc.php) 計算
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+自訂 CurrencyException 處理例外的回傳格式，並在 Handler 註冊，省去 try...catch...

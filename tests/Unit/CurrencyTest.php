@@ -76,6 +76,8 @@ class CurrencyTest extends TestCase
 
         $this->assertSame('0.00', $currency->publicBcround('0.004'));
         $this->assertSame('0.01', $currency->publicBcround('0.005'));
+        $this->assertSame('1234.01', $currency->publicBcround('1234.005'));
+        $this->assertSame('1234.00', $currency->publicBcround('1234.004'));
     }
 
     public function test_conversion_number_format()
@@ -179,6 +181,23 @@ class CurrencyTest extends TestCase
             ->from('USD')
             ->to('JPY')
             ->get();
+    }
+
+    public function test_convert_more_than_two_decimal_places()
+    {
+        $result = $this->currency
+            ->amount('0.001')
+            ->from('USD')
+            ->to('JPY')
+            ->get();
+        $this->assertSame('0.00', $result);
+
+        $result = $this->currency
+            ->amount('0.005')
+            ->from('USD')
+            ->to('JPY')
+            ->get();
+        $this->assertSame('1.12', $result);
     }
 
     private function getForexRate(): array

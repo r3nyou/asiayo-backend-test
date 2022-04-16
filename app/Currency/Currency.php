@@ -25,11 +25,11 @@ class Currency
      */
     public function get(): string
     {
-        return $this->bcround(bcmul(
+        return number_format($this->bcround(bcmul(
             $this->amount,
             $this->forexRate[$this->from][$this->to],
             7
-        ));
+        )), 2);
     }
 
     protected function bcround(string $num, int $scale = 2): string

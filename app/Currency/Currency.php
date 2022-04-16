@@ -2,6 +2,8 @@
 
 namespace App\Currency;
 
+use Exception;
+
 class Currency
 {
     protected array $forexRate;
@@ -22,9 +24,18 @@ class Currency
      * forex rate 為小數點後 5 位
      * 計算取到小數點後 7 位
      * @return string
+     * @throws Exception
      */
     public function get(): string
     {
+        $validCurrency = array_keys($this->forexRate);
+        if (!in_array($this->from, $validCurrency)) {
+            throw new Exception('from is invalid currency');
+        }
+        if (!in_array($this->to, $validCurrency)) {
+            throw new Exception('to is invalid currency');
+        }
+
         return number_format($this->bcround(bcmul(
             $this->amount,
             $this->forexRate[$this->from][$this->to],

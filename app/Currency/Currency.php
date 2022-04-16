@@ -40,10 +40,10 @@ class Currency
     protected function check(): void
     {
         $validCurrency = array_keys($this->forexRate);
-        if (!in_array($this->from, $validCurrency)) {
+        if (!in_array($this->from ?? '', $validCurrency)) {
             throw new Exception('from is invalid currency');
         }
-        if (!in_array($this->to, $validCurrency)) {
+        if (!in_array($this->to ?? '', $validCurrency)) {
             throw new Exception('to is invalid currency');
         }
 

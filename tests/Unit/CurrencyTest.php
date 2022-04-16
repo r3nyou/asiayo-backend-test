@@ -29,7 +29,11 @@ class CurrencyTest extends TestCase
             ->to('JPY')
             ->get();
         $this->assertSame('111.80', $result);
+    }
 
+    public function test_can_convert_from_format_integer()
+    {
+        $forexRate = $this->getForexRate()['currencies'];
         $result = (new Currency($forexRate))
             ->amount('1.00')
             ->from('USD')

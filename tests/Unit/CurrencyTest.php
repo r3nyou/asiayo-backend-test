@@ -9,8 +9,6 @@ class CurrencyTest extends TestCase
 {
     public function test_currency_construct_with_params()
     {
-        $this->assertTrue(true);
-
         $forexRate = $this->getForexRate()['currencies'];
         $currency = new class($forexRate) extends Currency {
             public function getForexRate()
@@ -20,6 +18,24 @@ class CurrencyTest extends TestCase
         };
 
         $this->assertTrue($forexRate === $currency->getForexRate());
+    }
+
+    public function test_can_convert_from_integer()
+    {
+        $forexRate = $this->getForexRate()['currencies'];
+        $result = (new Currency($forexRate))
+            ->amount('1')
+            ->from('USD')
+            ->to('JPY')
+            ->get();
+        $this->assertSame('111.80', $result);
+
+        $result = (new Currency($forexRate))
+            ->amount('1.00')
+            ->from('USD')
+            ->to('JPY')
+            ->get();
+        $this->assertSame('111.80', $result);
     }
 
     private function getForexRate(): array

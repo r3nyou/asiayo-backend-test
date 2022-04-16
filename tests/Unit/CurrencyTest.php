@@ -95,12 +95,11 @@ class CurrencyTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('from is invalid currency');
 
-        $result = $this->currency
+        $this->currency
             ->amount('1')
             ->from('FOO')
             ->to('JPY')
             ->get();
-        $this->assertSame('1', $result);
     }
 
     public function test_to_invalid_currency()
@@ -108,12 +107,11 @@ class CurrencyTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('to is invalid currency');
 
-        $result = $this->currency
+        $this->currency
             ->amount('1')
             ->from('USD')
             ->to('FOO')
             ->get();
-        $this->assertSame('1', $result);
     }
 
     public function test_from_currency_not_specified()
@@ -121,18 +119,16 @@ class CurrencyTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('from is invalid currency');
 
-        $result = $this->currency
+        $this->currency
             ->amount('1')
             ->from('')
             ->to('JPY')
             ->get();
-        $this->assertSame('1', $result);
 
-        $result = $this->currency
+        $this->currency
             ->amount('1')
             ->to('JPY')
             ->get();
-        $this->assertSame('1', $result);
     }
 
     public function test_to_currency_not_specified()
@@ -140,18 +136,16 @@ class CurrencyTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('to is invalid currency');
 
-        $result = $this->currency
+        $this->currency
             ->amount('1')
             ->from('USD')
             ->to('')
             ->get();
-        $this->assertSame('1', $result);
 
-        $result = $this->currency
+        $this->currency
             ->amount('1')
             ->from('USD')
             ->get();
-        $this->assertSame('1', $result);
     }
 
     public function test_amount_is_negative()

@@ -47,6 +47,23 @@ class CurrencyTest extends TestCase
         $this->assertSame('111.80', $result);
     }
 
+    public function test_can_convert_from_float()
+    {
+        $result = $this->currency
+            ->amount('0.1')
+            ->from('USD')
+            ->to('JPY')
+            ->get();
+        $this->assertSame('11.18', $result);
+
+        $result = $this->currency
+            ->amount('0.01')
+            ->from('USD')
+            ->to('JPY')
+            ->get();
+        $this->assertSame('1.12', $result);
+    }
+
     private function getForexRate(): array
     {
         return [

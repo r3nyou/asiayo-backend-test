@@ -114,7 +114,7 @@ class CurrencyTest extends TestCase
             ->get();
     }
 
-    public function test_from_currency_not_specified()
+    public function test_from_currency_is_empty()
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('from is invalid currency');
@@ -124,6 +124,12 @@ class CurrencyTest extends TestCase
             ->from('')
             ->to('JPY')
             ->get();
+    }
+
+    public function test_from_currency_not_specified()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('from is invalid currency');
 
         $this->currency
             ->amount('1')
@@ -131,7 +137,7 @@ class CurrencyTest extends TestCase
             ->get();
     }
 
-    public function test_to_currency_not_specified()
+    public function test_to_currency_is_empty()
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('to is invalid currency');
@@ -141,6 +147,12 @@ class CurrencyTest extends TestCase
             ->from('USD')
             ->to('')
             ->get();
+    }
+
+    public function test_to_currency_not_specified()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('to is invalid currency');
 
         $this->currency
             ->amount('1')

@@ -172,6 +172,16 @@ class CurrencyTest extends TestCase
             ->get();
     }
 
+    public function test_amount_is_zero()
+    {
+        $result = $this->currency
+            ->amount('0')
+            ->from('USD')
+            ->to('JPY')
+            ->get();
+        $this->assertSame('0.00', $result);
+    }
+
     public function test_amount_is_not_specified()
     {
         $this->expectException(\Exception::class);

@@ -7,6 +7,13 @@ use PHPUnit\Framework\TestCase;
 
 class CurrencyTest extends TestCase
 {
+    private Currency $currency;
+
+    protected function setUp(): void
+    {
+        $this->currency = new Currency($this->getForexRate()['currencies']);
+    }
+
     public function test_currency_construct_with_params()
     {
         $forexRate = $this->getForexRate()['currencies'];
@@ -22,8 +29,7 @@ class CurrencyTest extends TestCase
 
     public function test_can_convert_from_integer()
     {
-        $forexRate = $this->getForexRate()['currencies'];
-        $result = (new Currency($forexRate))
+        $result = $this->currency
             ->amount('1')
             ->from('USD')
             ->to('JPY')
@@ -33,8 +39,7 @@ class CurrencyTest extends TestCase
 
     public function test_can_convert_from_format_integer()
     {
-        $forexRate = $this->getForexRate()['currencies'];
-        $result = (new Currency($forexRate))
+        $result = $this->currency
             ->amount('1.00')
             ->from('USD')
             ->to('JPY')

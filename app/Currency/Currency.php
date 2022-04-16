@@ -28,6 +28,17 @@ class Currency
      */
     public function get(): string
     {
+        $this->check();
+
+        return number_format($this->bcround(bcmul(
+            $this->amount,
+            $this->forexRate[$this->from][$this->to],
+            7
+        )), 2);
+    }
+
+    protected function check(): void
+    {
         $validCurrency = array_keys($this->forexRate);
         if (!in_array($this->from, $validCurrency)) {
             throw new Exception('from is invalid currency');
@@ -39,12 +50,6 @@ class Currency
         if (!$this->amount || floatval($this->amount) < 0) {
             throw new Exception('amount must be greater than or equal to 0');
         }
-
-        return number_format($this->bcround(bcmul(
-            $this->amount,
-            $this->forexRate[$this->from][$this->to],
-            7
-        )), 2);
     }
 
     protected function bcround(string $num, int $scale = 2): string

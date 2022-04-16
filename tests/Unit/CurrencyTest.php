@@ -218,6 +218,11 @@ class CurrencyTest extends TestCase
             ->get();
     }
 
+    public function test_amount_upper_bound()
+    {
+        $this->markTestIncomplete();
+    }
+
     private function getForexRate(): array
     {
         return [

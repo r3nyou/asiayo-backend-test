@@ -44,7 +44,7 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(function (CurrencyException $e, $request) {
-            return response(['error' => $e->getMessage()], $e->getStatusCode());
+            return response(['message' => $e->getMessage()], $e->getStatusCode());
         });
     }
 }

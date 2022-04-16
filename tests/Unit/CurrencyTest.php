@@ -49,6 +49,8 @@ class CurrencyTest extends TestCase
 
     public function test_can_convert_from_float()
     {
+        $this->markTestIncomplete();
+
         $result = $this->currency
             ->amount('0.1')
             ->from('USD')
@@ -62,6 +64,20 @@ class CurrencyTest extends TestCase
             ->to('JPY')
             ->get();
         $this->assertSame('1.12', $result);
+    }
+
+    public function test_currency_bcround()
+    {
+        $forexRate = $this->getForexRate()['currencies'];
+        $currency = new class($forexRate) extends Currency {
+            public function publicBcround($num, $scale = 2)
+            {
+                return $this->bcround($num, $scale) ;
+            }
+        };
+
+        $this->assertSame('0.00', $currency->publicBcround('0.004'));
+        $this->assertSame('0.01', $currency->publicBcround('0.005'));
     }
 
     private function getForexRate(): array

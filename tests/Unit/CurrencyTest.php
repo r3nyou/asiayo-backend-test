@@ -169,7 +169,7 @@ class CurrencyTest extends TestCase
     public function test_amount_is_not_specified()
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('amount must be greater than or equal to 0');
+        $this->expectExceptionMessage('amount is not specified');
 
         $this->currency
             ->amount('')
@@ -198,6 +198,18 @@ class CurrencyTest extends TestCase
             ->to('JPY')
             ->get();
         $this->assertSame('1.12', $result);
+    }
+
+    public function test_amount_is_not_well_formed()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('amount is not well-formed');
+
+        $this->currency
+            ->amount('1,234.00')
+            ->from('USD')
+            ->to('JPY')
+            ->get();
     }
 
     private function getForexRate(): array

@@ -36,6 +36,10 @@ class Currency
             throw new Exception('to is invalid currency');
         }
 
+        if (!$this->amount || floatval($this->amount) < 0) {
+            throw new Exception('amount must be greater than or equal to 0');
+        }
+
         return number_format($this->bcround(bcmul(
             $this->amount,
             $this->forexRate[$this->from][$this->to],

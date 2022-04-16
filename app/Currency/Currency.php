@@ -19,11 +19,19 @@ class Currency
 
     public function get(): string
     {
-        return bcmul(
+        return $this->bcround(bcmul(
             $this->amount,
             $this->forexRate[$this->from][$this->to],
             2
-        );
+        ));
+    }
+
+    protected function bcround(string $num, int $scale = 2): string
+    {
+        $fix = str_pad('5', $scale + 1, '0', STR_PAD_LEFT);
+        $num = bcadd($num, "0.{$fix}", $scale + 1);
+
+        return bcmul($num, '1', $scale);
     }
 
     public function amount(string $amount): static

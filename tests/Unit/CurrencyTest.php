@@ -152,6 +152,35 @@ class CurrencyTest extends TestCase
         $this->assertSame('1', $result);
     }
 
+    public function test_amount_is_negative()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('amount must be greater than or equal to 0');
+
+        $this->currency
+            ->amount('-1')
+            ->from('USD')
+            ->to('JPY')
+            ->get();
+    }
+
+    public function test_amount_is_not_specified()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('amount must be greater than or equal to 0');
+
+        $this->currency
+            ->amount('')
+            ->from('USD')
+            ->to('JPY')
+            ->get();
+
+        $this->currency
+            ->from('USD')
+            ->to('JPY')
+            ->get();
+    }
+
     private function getForexRate(): array
     {
         return [

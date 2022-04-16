@@ -78,6 +78,16 @@ class CurrencyTest extends TestCase
         $this->assertSame('0.01', $currency->publicBcround('0.005'));
     }
 
+    public function test_conversion_number_format()
+    {
+        $result = $this->currency
+            ->amount('10000')
+            ->from('USD')
+            ->to('JPY')
+            ->get();
+        $this->assertSame('1,118,010.00', $result);
+    }
+
     private function getForexRate(): array
     {
         return [

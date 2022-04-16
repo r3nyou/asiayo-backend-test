@@ -20,9 +20,9 @@ class Currency
     }
 
     /**
-     * amount 為小數點後 2 位
+     * amount 四捨五入到小數點後 2 位
      * forex rate 為小數點後 5 位
-     * 計算取到小數點後 7 位
+     * 轉換取到小數點後 7 位
      * @return string
      * @throws Exception
      */
@@ -31,7 +31,7 @@ class Currency
         $this->check();
 
         return number_format($this->bcround(bcmul(
-            $this->amount,
+            $this->bcround($this->amount),
             $this->forexRate[$this->from][$this->to],
             7
         )), 2);

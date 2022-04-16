@@ -3,17 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Currency\Currency;
-use Illuminate\Http\Request;
+use App\Exceptions\CurrencyException;
+use App\Http\Requests\CurrencyRequest;
+use Exception;
 
 class CurrencyController extends Controller
 {
-    public function convert(Request $request)
+    public function convert(CurrencyRequest $request)
     {
-        $result = (new Currency(config('forexrate.currencies')))
-            ->amount($request->amount)
-            ->from($request->from)
-            ->to($request->to)
-            ->get();
+        try {
+            $result = (new Currency(config('forexrate.currencies')))
+                ->amount($request->amount)
+                ->from($request->from)
+                ->to($request->to)
+                ->get();
+        } catch (Exception $e) {
+            throw new CurrencyException($e->getMessage());
+        }
 
         return response([
             'from' => $request->from,

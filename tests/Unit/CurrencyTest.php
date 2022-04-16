@@ -88,6 +88,32 @@ class CurrencyTest extends TestCase
         $this->assertSame('1,118,010.00', $result);
     }
 
+    public function test_from_invalid_currency()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('from is invalid currency');
+
+        $result = $this->currency
+            ->amount('1')
+            ->from('FOO')
+            ->to('JPY')
+            ->get();
+        $this->assertSame('1', $result);
+    }
+
+    public function test_to_invalid_currency()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('to is invalid currency');
+
+        $result = $this->currency
+            ->amount('1')
+            ->from('USD')
+            ->to('FOO')
+            ->get();
+        $this->assertSame('1', $result);
+    }
+
     private function getForexRate(): array
     {
         return [

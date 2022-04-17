@@ -1,14 +1,14 @@
 # 範例啟動
 ```shell
-sh up.sh build --no-cache
-sh up.sh up -d
-sh up.sh composer install
+cp .env.example .env
+docker-compose build && docker-compose up -d
+docker exec asiayo-backend-test-api-1 composer install
 ```
 
 # 測試方式
 執行 unit test、feature test
 ```shell
-sh up.sh test
+docker exec asiayo-backend-test-api-1 php artisan test
 ```
 
 測試案例在 `tests/Unit`、`test/Feature`，測試案例包含
@@ -50,6 +50,8 @@ curl --location --request GET 'http://localhost/api/currency-converter?amount=12
 
 為了避免傳遞的參數過多，並提供更易讀的程式碼，實作了 Fluent Interface
 
-輸入的金額小數點後 2 位、匯率小數點後 5 位，需要較高精度的計算，因此 Currency 類別使用 [BCMath](https://www.php.net/manual/en/book.bc.php) 計算
+輸入的金額小數點後 2 位、匯率小數點後 5 位，需要較高精度的計算，因此 Currency 類別使用 [BC Math](https://www.php.net/manual/en/book.bc.php) 計算
+
+BC MATH 提供任意大小、精度的計算，最多為 0x7FFFFFFF，[參考](https://www.php.net/manual/en/intro.bc.php)
 
 自訂 CurrencyException 處理例外的回傳格式，並在 Handler 註冊，省去 try...catch...

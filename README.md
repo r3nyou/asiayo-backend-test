@@ -1,8 +1,14 @@
 # 範例啟動
 ```shell
 cp .env.example .env
-docker-compose build && docker-compose up -d
-docker exec asiayo-backend-test-api-1 composer install
+docker-compose build
+docker-compose run api composer install
+docker-compose up -d
+```
+
+關閉
+```
+docker-compose down
 ```
 
 # 測試方式

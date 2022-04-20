@@ -14,7 +14,7 @@ docker-compose down
 # 測試方式
 執行 unit test、feature test
 ```shell
-docker exec asiayo-backend-test-api-1 php artisan test
+docker-compose exec api php artisan test
 ```
 
 測試案例在 `tests/Unit`、`test/Feature`，測試案例包含
@@ -33,7 +33,7 @@ docker exec asiayo-backend-test-api-1 php artisan test
 
 轉換前後範例
 ```
-# forex rate: 1 USD to JPT 111.801
+# forex rate: 1 USD to JPY 111.801
 USD         JPY
 0           0.00
 0.004       0.00
